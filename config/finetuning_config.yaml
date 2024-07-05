@@ -1,0 +1,37 @@
+model:
+  name: "mistralai/Mistral-7B-Instruct-v0.1"
+  new_model: "Mistral-7B-Instruct-detcext-v0.1"  # Specify the new model name for saving or pushing
+  quantization:
+    load_in_4bit: true
+    bnb_4bit_use_double_quant: true
+    bnb_4bit_quant_type: "nf4"
+    bnb_4bit_compute_dtype: "bfloat16"
+  device_map:
+    - ""
+
+dataset:
+  path: "C:/Users/jlopezba/Desktop/projects/git/data-extractor/data/eval/inst_dataset_small.jsonl"
+  type: alpaca
+  from_huggingface: false
+
+training:
+  output_dir: "./output"
+  peft_enabled: true
+  lora_config:
+    r: 8
+    lora_alpha: 32
+    target_modules: ["linear"]
+    lora_dropout: 0.05
+    bias: "none"
+    task_type: "CAUSAL_LM"
+  hf_push: true
+  hf_org: "my-organization"
+  trainer_args:
+    per_device_train_batch_size: 1
+    gradient_accumulation_steps: 4
+    max_steps: 100
+    learning_rate: 0.0002
+    logging_steps: 1
+    save_strategy: "epoch"
+    optim: "paged_adamw_8bit"
+

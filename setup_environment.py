@@ -15,6 +15,8 @@ def install_packages():
         "scipy",  # Add specific version if needed
         "peft",  # This could require a specific installation method or version
         "bitsandbytes>=0.40.2",  # For optimizing model training
+        "python-dotenv>=0.19.0",  # Add python-dotenv to the list
+        "hydra-core>=1.1.0"  # Add hydra-core to the list
     ]
 
     for package in required_packages:
@@ -24,10 +26,14 @@ def check_environment():
     """
     Check for required environment variables or other system settings.
     """
+    from dotenv import load_dotenv  # Import here to ensure it's available after installation
+    load_dotenv()  # Load environment variables from .env file
+
     # Example check for CUDA availability for PyTorch
     import torch
     if not torch.cuda.is_available():
-        raise EnvironmentError("CUDA is not available. Please check your installation of CUDA and NVIDIA drivers.")
+        # raise EnvironmentError("CUDA is not available. Please check your installation of CUDA and NVIDIA drivers.")
+        print("CUDA is not available. Please check your installation of CUDA and NVIDIA drivers.")
 
     # Example of checking an environment variable
     if 'HUGGINGFACE_TOKEN' not in os.environ:

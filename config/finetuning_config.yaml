@@ -10,7 +10,7 @@ model:
     - ""
 
 dataset:
-  path: "C:/Users/jlopezba/Desktop/projects/git/data-extractor/data/eval/inst_dataset_small.jsonl"
+  path: "data/eval/example_instruction_dataset.jsonl"
   type: alpaca
   from_huggingface: false
 

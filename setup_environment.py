@@ -26,15 +26,21 @@ def check_environment():
     """
     Check for required environment variables or other system settings.
     """
-    from dotenv import load_dotenv  # Import here to ensure it's available after installation
-    load_dotenv()  # Load environment variables from .env file
+    if 'google.colab' in sys.modules:
+        from huggingface_hub import notebook_login
+        notebook_login()
+        if not huggingface_token:
+            raise EnvironmentError("HUGGINGFACE_TOKEN is not set in Google Colab. Please set this secret.")
+        os.environ['HUGGINGFACE_TOKEN'] = huggingface_token
+    else:
+        from dotenv import load_dotenv  # Import here to ensure it's available after installation
+        load_dotenv()  # Load environment variables from .env file
 
     # Example check for CUDA availability for PyTorch
     import torch
     if not torch.cuda.is_available():
-        # raise EnvironmentError("CUDA is not available. Please check your installation of CUDA and NVIDIA drivers.")
         print("CUDA is not available. Please check your installation of CUDA and NVIDIA drivers.")
-
+    
     # Example of checking an environment variable
     if 'HUGGINGFACE_TOKEN' not in os.environ:
         raise EnvironmentError("HUGGINGFACE_TOKEN is not set. Please set this environment variable.")
